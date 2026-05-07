@@ -352,7 +352,8 @@ class TestBuild:
         assert "Sitemap: https://awesome-python.com/sitemap.xml" in llms_txt
         assert "## Categories" in llms_txt
         assert "**Tools**" in llms_txt
-        assert "- [Widgets](#widgets)" in llms_txt
+        assert "- [Widgets](https://awesome-python.com/categories/widgets/)" in llms_txt
+        assert "- [Widgets](#widgets)" not in llms_txt
         assert "### Widgets" in llms_txt
         assert "- [w1](https://example.com) - A widget." in llms_txt
         assert "- [w2](https://github.com/owner/w2) - A starred widget. (GitHub stars: 42)" in llms_txt

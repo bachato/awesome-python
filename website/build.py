@@ -270,6 +270,36 @@ def extract_categories_body(markdown: str) -> str:
     return "".join(lines[start_idx:end_idx]).rstrip() + "\n"
 
 
+def github_markdown_anchor(text: str) -> str:
+    anchor = text.strip().lower()
+    anchor = re.sub(r"[^\w\s-]", "", anchor)
+    anchor = re.sub(r"\s", "-", anchor)
+    return f"#{anchor}"
+
+
+def link_llms_category_index_to_canonical_pages(markdown: str, categories: Sequence[ParsedSection]) -> str:
+    """Point the README-derived category index at canonical category pages."""
+    category_urls = {}
+    for category in categories:
+        public_url = category_public_url(category)
+        category_urls[f"#{category['slug']}"] = public_url
+        category_urls[github_markdown_anchor(category["name"])] = public_url
+    lines = markdown.splitlines(keepends=True)
+    out: list[str] = []
+
+    def replace_link(match: re.Match[str]) -> str:
+        target = match.group(1)
+        url = category_urls.get(target)
+        if url is None:
+            return match.group(0)
+        return match.group(0).replace(f"({target})", f"({url})", 1)
+
+    for line in lines:
+        out.append(MARKDOWN_LINK_RE.sub(replace_link, line))
+
+    return "".join(out)
+
+
 def build_llms_txt(
     template_text: str,
     *,
@@ -280,7 +310,10 @@ def build_llms_txt(
 ) -> str:
     """Render the llms.txt entry point with the curated category catalog."""
     categories_md = annotate_entries_with_stars(
-        extract_categories_body(readme_text).rstrip(),
+        link_llms_category_index_to_canonical_pages(
+            extract_categories_body(readme_text).rstrip(),
+            categories,
+        ),
         stars_data,
         format_stars=lambda n: f"GitHub stars: {n}",
     )

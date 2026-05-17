@@ -1,6 +1,6 @@
-# Awesome Python
+# [Awesome Python](https://awesome-python.com/)
 
-An opinionated guide to the best Python frameworks, libraries, tools, and resources.
+An opinionated guide to the best Python frameworks, libraries, tools, and resources. Use the [website](https://awesome-python.com/) to search and filter projects more easily.
 
 ## **Sponsors**
 
@@ -479,7 +479,6 @@ _Libraries for data analysis._
 - [pathway](https://github.com/pathwaycom/pathway) - Real-time data processing framework for Python with reactive dataflows.
 - [polars](https://github.com/pola-rs/polars) - A fast DataFrame library implemented in Rust with a Python API.
 
-  
 ### Data Ingestion / ETL
 
 _Libraries for data extraction, transformation, and loading pipelines across multiple sources and destinations._
